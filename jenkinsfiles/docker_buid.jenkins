@@ -1,20 +1,23 @@
 #!groovy
 // Запрещаем одновременное выполнение билдов
 properties([disableConcurrentBuilds()])
+
 pipeline {
     agent {
         label 'ubuntu'
     }
-    //храним последине 10 билдов и их артефакты
+    
+    // Храним последние 10 билдов и их артефакты
     options {
-        buidDiscarder(logRotator(numTuKeepStr: '10', artifactNumToKeepStr: '10'))
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
         timestamps()
     }
+    
     stages {
-       stage('Clone-Git-Repo') {
+        stage('Clone-Git-Repo') {
             steps {
-                echo " ========== start clone git-repo ========== "
-                // Клонируем репозиторий git
+                echo "========== Start cloning git repository =========="
+                // Клонируем репозиторий Git
                 script {
                     try {
                         sh 'git clone https://github.com/LateMomuse/JenkinsTest.git'
@@ -23,17 +26,16 @@ pipeline {
                         error("Сборка прервана.")
                     }
                 }
-		        }
-	    }
-
-      stage("create docker image") {
-        echo " ========== start building image ========== "
-        dir ('/docker/toolbox') {
-          sh 'docker build .'
+            }
         }
-      }
-
-
-
+        
+        stage("Create Docker image") {
+            steps {
+                echo "========== Start building image =========="
+                dir('/docker/toolbox') {
+                    sh 'docker build .'
+                }
+            }
+        }
     }
 }
