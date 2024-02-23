@@ -45,26 +45,19 @@ pipeline {
                 }
             }
         }
-    }
-
+        
         stage("Run Docker image") {
             steps {
                 echo "========== Start running image =========="
                 script {
                     try {
-                        dir('/docker/toolbox') {
-                            sh 'docker start test-server .'
-                        }
+                        sh 'docker start test-server'
                     } catch (Exception e) {
-                        echo "Ошибка при сборке Docker image: ${e.message}"
+                        echo "Ошибка при запуске Docker image: ${e.message}"
                         error("Сборка прервана.")
                     }
                 }
             }
         }
     }
-
-
-
-
 }
