@@ -1,3 +1,4 @@
+#!groovy
 // Запрещаем одновременное выполнение билдов
 properties([disableConcurrentBuilds()])
 
@@ -69,7 +70,7 @@ pipeline {
                         if (curlOutputlocal.trim() != '200') {
                             error("Ошибка: HTTP статус не равен 200")
                         }
-                        def curlOutputnet = sh(returnStdout: true, script: 'curl -s -o /dev/null -w "%{http_code}" http://example.com')
+                        def curlOutputnet = sh(returnStdout: true, script: 'curl -s -o /dev/null -w "%{http_code}" http://172.30.0.81')
                         if (curlOutputnet.trim() != '200') {
                             error("Ошибка: HTTP статус не равен 200")
                         }
