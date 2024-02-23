@@ -20,7 +20,7 @@ pipeline {
                 // Клонируем репозиторий Git
                 script {
                     try {
-                        sh 'git clone https://github.com/LateMomuse/JenkinsTest.git'
+                        sh 'git clone https://github.com/LateMouse/JenkinsTest.git'
                     } catch (Exception e) {
                         echo "Ошибка при клонировании репозитория: ${e.message}"
                         error("Сборка прервана.")
