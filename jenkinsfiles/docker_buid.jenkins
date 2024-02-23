@@ -51,9 +51,30 @@ pipeline {
                 echo "========== Start running image =========="
                 script {
                     try {
-                        sh 'docker start test-server'
+                        sh 'docker run -d -p 80:80 test-server'
                     } catch (Exception e) {
                         echo "Ошибка при запуске Docker image: ${e.message}"
+                        error("Сборка прервана.")
+                    }
+                }
+            }
+        }
+        
+        stage("Test Application") {
+            steps {
+                echo "========== Start testing application =========="
+                script {
+                    try {
+                        def curlOutputlocal = sh(returnStdout: true, script: 'curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1')
+                        if (curlOutputlocal.trim() != '200') {
+                            error("Ошибка: HTTP статус не равен 200")
+                        }
+                        def curlOutputnet = sh(returnStdout: true, script: 'curl -s -o /dev/null -w "%{http_code}" http://example.com')
+                        if (curlOutputnet.trim() != '200') {
+                            error("Ошибка: HTTP статус не равен 200")
+                        }
+                    } catch (Exception e) {
+                        echo "Ошибка при выполнении тестов: ${e.message}"
                         error("Сборка прервана.")
                     }
                 }
