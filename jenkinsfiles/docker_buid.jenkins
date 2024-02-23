@@ -51,7 +51,6 @@ pipeline {
                 echo "========== Start running image =========="
                 script {
                     try {
-                        sh 'docker run --name test-server test-server'
                         sh 'docker start test-server'
                     } catch (Exception e) {
                         echo "Ошибка при запуске Docker image: ${e.message}"
