@@ -20,6 +20,7 @@ pipeline {
                 // Клонируем репозиторий Git
                 script {
                     try {
+                        sh `pwd`
                         sh 'git clone https://github.com/LateMouse/JenkinsTest.git'
                         sh 'mv /JenkinsTest/docker/toolbox/Dockerfile docker/toolbox/Dockerfile'
                     } catch (Exception e) {
