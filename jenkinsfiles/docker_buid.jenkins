@@ -22,7 +22,7 @@ pipeline {
                     try {
                         sh 'pwd'
                         sh 'git clone https://github.com/LateMouse/JenkinsTest.git'
-                        sh 'mv /JenkinsTest/docker/toolbox/Dockerfile docker/toolbox/Dockerfile'
+                        sh 'mv ./JenkinsTest/docker/toolbox/Dockerfile /docker/toolbox/Dockerfile'
                     } catch (Exception e) {
                         echo "Ошибка при клонировании репозитория: ${e.message}"
                         error("Сборка прервана.")
