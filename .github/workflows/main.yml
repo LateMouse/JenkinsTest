@@ -1,17 +1,38 @@
-name: CI/CD Pipeline
+name: Java CI
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
 
-      - name: Install Dependencies
-        run: npm ci
-      
-      - name: Run Tests
-        run: npm test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      - name: Build with Maven
+        run: mvn clean install --file pom.xml
+
+      - name: Run Java code
+        run: java -cp target/classes main.Main 1234
+
+      - name: Check Java code output
+        run: |
+          output=$(java -cp target/classes main.Main 1234)
+          if [[ "$output" == "1" ]]; then
+            echo "Java code output is correct."
+          else
+            echo "Java code output is incorrect."
+            exit 1
+          fi
