@@ -1,0 +1,23 @@
+name: Parallel Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node: [node1, node2]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build on ${{ matrix.node }}
+        run: |
+          echo "Building on ${{ matrix.node }}"
+          # Команды для сборки проекта. Пока не ясно что именно мы хотим, поэтому оставляю пустым.
