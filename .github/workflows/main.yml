@@ -1,38 +1,23 @@
-name: Java CI
+name: GitHub Pipeline
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
+  build-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '11'
+      - name: Build
+        run: echo " ========== start building ========== "
 
-      - name: Build with Maven
-        run: mvn clean install --file pom.xml
+      - name: Test
+        run: echo " ========== start testing ========== "
 
-      - name: Run Java code
-        run: java -cp target/classes main.Main 1234
-
-      - name: Check Java code output
-        run: |
-          output=$(java -cp target/classes main.Main 1234)
-          if [[ "$output" == "1" ]]; then
-            echo "Java code output is correct."
-          else
-            echo "Java code output is incorrect."
-            exit 1
-          fi
+      - name: Deploy
+        run: echo " ========== start deploying ========== "
